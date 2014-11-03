@@ -47,7 +47,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	 *
 	 * Any output here should be contained within its own <table> element.
 	 *
-	 *
+	 * Parameters <Integer> BugID
 	 *
 	 */
 	function event_view_bug_extra($p_bug_id){
@@ -56,6 +56,14 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		echo '<script src="plugins/OpenStreetMap/js/showmap.js" type="text/javascript"></script>';
 	}
 
+	/**
+   * This event allows plugins to output HTML code from inside the <head> tag, for use with
+   * CSS, Javascript, RSS, or any other similary resources. Note that this event is signaled after all
+   * other CSS and Javascript resources are linked by MantisBT.
+	 *
+	 * return <String> HTML code to output.
+	 *
+   */
 	function event_layout_resources(){
 		$t_html = '<link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">';
 		$t_html .= '<script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>';
