@@ -1,0 +1,5 @@
+
+
+$s_plugin_OpenStreetMap = '';
+$s_plugin_OpenStreetMap_title = 'OpenStreetMap Plugin';
+$s_plugin_OpenStreetMap_description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
