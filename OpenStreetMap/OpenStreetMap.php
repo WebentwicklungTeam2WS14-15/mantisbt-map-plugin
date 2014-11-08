@@ -215,8 +215,6 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						echo '&#160;		Ortsdaten';
 					echo '</td>';
 				echo '</tr>';
-				echo '<tr>';
-				echo '</tr>';
 			echo '</table>';
 		echo '</div>';
 	}
