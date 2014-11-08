@@ -15,6 +15,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		// The localization does not work somehow.
 		// This is just to see if it does at some point.
 		//$this->name = plugin_lang_get( 'title' );
+
 		$this->name = 'OpenStreetMap Plugin';
 		$this->description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
 		$this->page = '';
@@ -47,7 +48,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 			'EVENT_UPDATE_BUG_FORM' => 'event_update_bug_form',
 			'EVENT_UPDATE_BUG' => 'event_update_bug'
 		);
-		return array_merge(parent::hooks(), $t_hooks);
+		return array_merge( parent::hooks(), $t_hooks );
 	}
 
 	/**
@@ -59,7 +60,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Parameters: <Integer> BugID
 	*
 	*/
-	function event_view_bug_extra($p_bug_id){
+	function event_view_bug_extra( $p_bug_id ){
 		echo '<h3>Ortsdaten setzen</h3>';
 		echo '<div id="map" class="map" style="height:300px;"></div>';
 		echo '<script src="plugins/OpenStreetMap/js/showmap.js" type="text/javascript"></script>';
@@ -114,7 +115,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	* Return: <Complex> Bug data structure
 	*/
-	function event_report_bug_data($bug_data_structure){
+	function event_report_bug_data( $bug_data_structure ){
 		//TODO implement
 	}
 
@@ -126,8 +127,10 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Parameters: <Integer> BugID
 	*
 	*/
-	function event_update_bug_form(){
-		//TODO implement
+	function event_update_bug_form( $p_bug_id ){
+		echo '<h3>Ortsdaten setzen</h3>';
+		echo '<div id="map" class="map" style="height:300px;"></div>';
+		echo '<script src="plugins/OpenStreetMap/js/showmap.js" type="text/javascript"></script>';
 	}
 
 
@@ -140,7 +143,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	* Return: <Complex> Bug data structure
 	*/
-	function event_update_bug($bug_data_structure, $bug_id){
+	function event_update_bug( $bug_data_structure, $bug_id ){
 		//TODO implement
 	}
 
