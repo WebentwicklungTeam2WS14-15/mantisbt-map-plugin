@@ -84,8 +84,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Parameters: <Integer> Bug ID
 	*
 	*/
-	function event_view_bug_extra( $p_bug_id ){
-		$this->show_map_in_view();
+	function event_view_bug_extra( $p_event, $p_bug_id ){
+		$this->show_map_in_view( $p_bug_id );
 	}
 
 	/**
@@ -95,8 +95,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Parameters: <Integer> Bug ID
 	*
 	*/
-	function event_update_bug_form( $p_bug_id ){
-		$this->show_map_in_form();
+	function event_update_bug_form( $p_event, $p_bug_id ){
+		$this->show_map_update_form( $p_bug_id );
 	}
 
 	/**
@@ -108,8 +108,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Parameters: <Integer> Project ID
 	*
 	*/
-	function event_report_bug_form( $p_project_id ){
-		$this->show_map_in_form();
+	function event_report_bug_form( $p_event, $p_project_id ){
+		$this->show_map_report_form( $p_project_id );
 	}
 
 	//************************************************************************************************
@@ -125,7 +125,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	* Return: <Complex> Bug data structure
 	*/
-	function event_report_bug_data( $bug_data_structure ){
+	function event_report_bug_data( $p_event, $bug_data_structure ){
 		//TODO implement
 	}
 
@@ -138,7 +138,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	* Return: <Complex> Bug data structure
 	*/
-	function event_update_bug( $bug_data_structure, $bug_id ){
+	function event_update_bug( $p_event, $bug_data_structure, $bug_id ){
 		//TODO implement
 	}
 
@@ -182,54 +182,70 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a basic map
 	*
 	*/
-	function show_map_in_view(){
-		echo '<a name="mapview" id="mapview" /><br />';
-		echo '<div id="mapview_open">';
-			echo '<table class="width100" cellspacing="1">';
-				echo '<tr>';
-					echo '<td class="form-title" colspan="2">';
-						echo '<a href="" onclick="ToggleDiv( \'mapview\' ); return false;">';
-							echo '<img border="0" src="images/minus.png" alt="-" />';
-						echo '</a>';
-						echo '&#160;		Ortsdaten';
-					echo '</td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td class="center" colspan="2">';
-						echo '<div id="map" class="map" style="height:300px;"></div>';
-						echo '<script type="text/javascript">';
-							echo 'osmp.showMap();';
-						echo '</script>';
-					echo '</td>';
-				echo '</tr>';
-			echo '</table>';
-		echo '</div>';
+	function show_map_in_view( $p_bug_id ){
+		echo '<a name="mapview" id="mapview" /><br />'
+				.'<div id="mapview_open">'
+					.'<table class="width100" cellspacing="1">'
+						.'<tr>'
+							.'<td class="form-title" colspan="2">'
+								.'<a href="" onclick="ToggleDiv( \'mapview\' ); return false;">'
+									.'<img border="0" src="images/minus.png" alt="-" />'
+								.'</a>'
+								.'&#160;		Ortsdaten'
+							.'</td>'
+						.'</tr>'
+						.'<tr>'
+							.'<td class="center" colspan="2">'
+								.'<div id="map" class="map" style="height:300px;"></div>'
+								.'<script type="text/javascript">'
+									.'osmp.showMap();'
+								.'</script>'
+							.'</td>'
+						.'</tr>'
+					.'</table>'
+				.'</div>';
 
-		echo '<div id="mapview_closed" class="hidden">';
-			echo '<table class="width100" cellspacing="1">';
-				echo '<tr>';
-					echo '<td class="form-title" colspan="2">';
-						echo '<a href="" onclick="ToggleDiv( \'mapview\' ); return false;">';
-							echo '<img border="0" src="images/plus.png" alt="+" />';
-						echo '</a>';
-						echo '&#160;		Ortsdaten';
-					echo '</td>';
-				echo '</tr>';
-			echo '</table>';
-		echo '</div>';
+		echo '<div id="mapview_closed" class="hidden">'
+					.'<table class="width100" cellspacing="1">'
+						.'<tr>'
+							.'<td class="form-title" colspan="2">'
+								.'<a href="" onclick="ToggleDiv( \'mapview\' ); return false;">'
+									.'<img border="0" src="images/plus.png" alt="+" />'
+								.'</a>'
+								.'&#160;		Ortsdaten'
+							.'</td>'
+						.'</tr>'
+					.'</table>'
+				.'</div>';
 	}
 
 
-	function show_map_in_form(){
-		echo '<tr class="row-1">';
-		echo '<td class="category">';
-		echo 'Ortsdaten setzen';
-		echo '</td><td colspan="5">';
-		echo '<div id="map" class="map" style="height:300px;"></div>';
-		echo '<script type="text/javascript">';
-		echo 'osmp.showMap();';
-		echo '</script>';
-		echo '</td></tr>';
+	function show_map_update_form( $p_bug_id ){
+		echo '<tr class="row-1">'
+					.'<td class="category">'
+						.'Ortsdaten setzen'
+					.'</td>'
+					.'<td colspan="5">'
+						.'<div id="map" class="map" style="height:300px;"></div>'
+						.'<script type="text/javascript">'
+							.'osmp.showMap();'
+						.'</script>'
+					.'</td>'
+				.'</tr>';
+	}
+
+	function show_map_report_form( $p_project_id ){
+		echo '<tr class="row-1">'
+					.'<td class="category">'
+						.'Ortsdaten setzen'
+					.'</td>'
+					.'<td colspan="5">'
+						.'<div id="map" class="map" style="height:300px;"></div>'
+						.'<script type="text/javascript">'
+							.'osmp.showMap();'
+						.'</script>'
+					.'</td>'
+				.'</tr>';
 	}
 
 } // Close class
