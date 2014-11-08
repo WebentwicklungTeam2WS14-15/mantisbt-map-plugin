@@ -1,5 +1,10 @@
+<?php
 
+  $s_plugin_OpenStreetMap = '';
+  $s_plugin_OpenStreetMap_title = 'OpenStreetMap Plugin';
+  $s_plugin_OpenStreetMap_description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
 
-$s_plugin_OpenStreetMap = '';
-$s_plugin_OpenStreetMap_title = 'OpenStreetMap Plugin';
-$s_plugin_OpenStreetMap_description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
+  // Bug extra
+  $s_plugin_OpenStreetMap_bug_extra_title = 'Ortsdaten setzen';
+
+/* ?> No closing php tag as of documentation */

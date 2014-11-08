@@ -1,9 +1,9 @@
 <?php
 
-/**
- *  requires MantisPlugin.class.php
+/*
+ * As of documentation this is not necessary
+ * require_once( config_get( 'class_path' ) . 'MantisPlugin.class.php' );
  */
-require_once( config_get( 'class_path' ) . 'MantisPlugin.class.php' );
 
 class OpenStreetMapPlugin extends MantisPlugin {
 
@@ -11,6 +11,10 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*  A method that populates the plugin information and minimum requirements.
 	*/
 	function register() {
+
+		// The localization does not work somehow.
+		// This is just to see if it does at some point.
+		//$this->name = plugin_lang_get( 'title' );
 		$this->name = 'OpenStreetMap Plugin';
 		$this->description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
 		$this->page = '';
@@ -56,7 +60,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	*/
 	function event_view_bug_extra($p_bug_id){
-		echo '<h3>OpenStreetMap plugin test</h3>';
+		echo '<h3>Ortsdaten setzen</h3>';
 		echo '<div id="map" class="map" style="height:300px;"></div>';
 		echo '<script src="plugins/OpenStreetMap/js/showmap.js" type="text/javascript"></script>';
 	}
@@ -140,5 +144,5 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		//TODO implement
 	}
 
-}
+} // Close class
 ?>
