@@ -65,9 +65,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	*/
 	function event_layout_resources(){
-		$t_html = '<link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">';
-		$t_html .= '<script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>';
-		$t_html .= '<script src="plugins/OpenStreetMap/js/osp.js" type="text/javascript"></script>';
+		$t_html = '<script type="text/javascript" src="http://openlayers.org/en/v3.0.0/build/ol.js"></script>';
+		$t_html .= '<link type="text/css" rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css">';
+		$t_html .= '<script type="text/javascript" src="/mantisbt/plugins/OpenStreetMap/js/osmp.js"></script>';
 		return $t_html;
 	}
 
@@ -85,7 +85,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	*/
 	function event_view_bug_extra( $p_bug_id ){
-		$this->show_map();
+		$this->show_map_in_view();
 	}
 
 	/**
@@ -182,12 +182,43 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a basic map
 	*
 	*/
-	function show_map(){
-		echo '<h3>Ortsdaten</h3>';
-		echo '<div id="map" class="map" style="height:300px;"></div>';
-		echo '<script type="text/javascript">';
-		echo 'osp.showMap();';
-		echo '</script>';
+	function show_map_in_view(){
+		echo '<a name="mapview" id="mapview" /><br />';
+		echo '<div id="mapview_open">';
+			echo '<table class="width100" cellspacing="1">';
+				echo '<tr>';
+					echo '<td class="form-title" colspan="2">';
+						echo '<a href="" onclick="ToggleDiv( \'mapview\' ); return false;">';
+							echo '<img border="0" src="images/minus.png" alt="-" />';
+						echo '</a>';
+						echo '&#160;		Ortsdaten';
+					echo '</td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td class="center" colspan="2">';
+						echo '<div id="map" class="map" style="height:300px;"></div>';
+						echo '<script type="text/javascript">';
+							echo 'osmp.showMap();';
+						echo '</script>';
+					echo '</td>';
+				echo '</tr>';
+			echo '</table>';
+		echo '</div>';
+
+		echo '<div id="mapview_closed" class="hidden">';
+			echo '<table class="width100" cellspacing="1">';
+				echo '<tr>';
+					echo '<td class="form-title" colspan="2">';
+						echo '<a href="" onclick="ToggleDiv( \'mapview\' ); return false;">';
+							echo '<img border="0" src="images/plus.png" alt="+" />';
+						echo '</a>';
+						echo '&#160;		Ortsdaten';
+					echo '</td>';
+				echo '</tr>';
+				echo '<tr>';
+				echo '</tr>';
+			echo '</table>';
+		echo '</div>';
 	}
 
 
@@ -198,7 +229,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		echo '</td><td colspan="5">';
 		echo '<div id="map" class="map" style="height:300px;"></div>';
 		echo '<script type="text/javascript">';
-		echo 'osp.showMap();';
+		echo 'osmp.showMap();';
 		echo '</script>';
 		echo '</td></tr>';
 	}
