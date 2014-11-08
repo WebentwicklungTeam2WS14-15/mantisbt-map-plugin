@@ -179,8 +179,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	//************************************************************************************************
 
 	/**
-	* Display a basic map
-	*
+	* Display a collapseable map in the bug view
 	*/
 	function show_map_in_view( $p_bug_id ){
 		echo '<a name="mapview" id="mapview" /><br />'
@@ -219,7 +218,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 				.'</div>';
 	}
 
-
+	/**
+	* Display a map in the bug update form
+	*/
 	function show_map_update_form( $p_bug_id ){
 		echo '<tr class="row-1">'
 					.'<td class="category">'
@@ -234,6 +235,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 				.'</tr>';
 	}
 
+	/**
+	* Display a map in the bug report form
+	*/
 	function show_map_report_form( $p_project_id ){
 		echo '<tr class="row-1">'
 					.'<td class="category">'
