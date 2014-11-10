@@ -188,7 +188,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a collapseable map in the bug view
 	*/
 	function show_map_in_view( $p_bug_id ){
-		$t_address = 'ADRESSE HIER';
+		$t_address = 'Friedrich-Heinrich-Allee 26 47475 Kamp-Lintfort';
+		$t_coordiantes = '51.500597, 6.544889';
 
 		echo '<a name="mapview" id="mapview" /><br />'
 				.'<div id="mapview_open">'

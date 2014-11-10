@@ -9,7 +9,7 @@ osmp.showMap = function() {
     ],
     view: new ol.View({
       center: ol.proj.transform([51.499778, 6.545100], 'EPSG:4326', 'EPSG:3857'),
-      zoom: 10
+      zoom: 5
     })
   });
 }
