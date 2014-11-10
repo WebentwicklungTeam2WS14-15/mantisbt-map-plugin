@@ -65,9 +65,15 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	*/
 	function event_layout_resources(){
-		$t_html = '<script type="text/javascript" src="http://openlayers.org/en/v3.0.0/build/ol.js"></script>';
-		$t_html .= '<link type="text/css" rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css">';
-		$t_html .= '<script type="text/javascript" src="/mantisbt/plugins/OpenStreetMap/js/osmp.js"></script>';
+		$osmpjs = plugin_file( 'osmp.js' );
+		$osmpcss = plugin_file( 'osmp_style.css' );
+		$oljs = plugin_file( 'ol.js' );
+		$olcss = plugin_file( 'ol.css' );
+
+		$t_html = '<script type="text/javascript" src="'.$oljs.'"></script>';
+		$t_html .= '<link type="text/css" rel="stylesheet" href="'.$olcss.'">';
+		$t_html .= '<link type="text/css" rel="stylesheet" href="'.$osmpcss.'">';
+		$t_html .= '<script type="text/javascript" src="'.$osmpjs.'"></script>';
 		return $t_html;
 	}
 
@@ -125,8 +131,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	* Return: <Complex> Bug data structure
 	*/
-	function event_report_bug_data( $p_event, $bug_data_structure ){
-		//TODO implement
+	function event_report_bug_data( $p_event, $p_bug_data_structure ){
+		return $p_bug_data_structure;
 	}
 
 	/**
@@ -138,8 +144,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*
 	* Return: <Complex> Bug data structure
 	*/
-	function event_update_bug( $p_event, $bug_data_structure, $bug_id ){
-		//TODO implement
+	function event_update_bug( $p_event, $p_bug_data_structure, $p_bug_id ){
+		return $p_bug_data_structure;
 	}
 
 	//************************************************************************************************
@@ -182,6 +188,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a collapseable map in the bug view
 	*/
 	function show_map_in_view( $p_bug_id ){
+		$t_address = 'ADRESSE HIER';
+
 		echo '<a name="mapview" id="mapview" /><br />'
 				.'<div id="mapview_open">'
 					.'<table class="width100" cellspacing="1">'
@@ -195,7 +203,10 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'</tr>'
 						.'<tr>'
 							.'<td class="center" colspan="2">'
-								.'<div id="map" class="map" style="height:300px;"></div>'
+								.'<div id="map_address_display">'
+								.'<div id="map_address_display_text">'.$t_address.'</div>'
+								.'</div>'
+								.'<div id="osmp_map"></div>'
 								.'<script type="text/javascript">'
 									.'osmp.showMap();'
 								.'</script>'
@@ -214,6 +225,13 @@ class OpenStreetMapPlugin extends MantisPlugin {
 								.'&#160;		Ortsdaten'
 							.'</td>'
 						.'</tr>'
+						.'<tr>'
+							.'<td class="center" colspan="2">'
+								.'<div id="map_address_display">'
+								.'<div id="map_address_display_text">'.$t_address.'</div>'
+								.'</div>'
+							.'</td>'
+						.'</tr>'
 					.'</table>'
 				.'</div>';
 	}
@@ -227,7 +245,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'Ortsdaten setzen'
 					.'</td>'
 					.'<td colspan="5">'
-						.'<div id="map" class="map" style="height:300px;"></div>'
+						.'<input id="map_address_input" type="text" name="address" size="105" maxlength="128" value="">'
+						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
 							.'osmp.showMap();'
 						.'</script>'
@@ -244,7 +263,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'Ortsdaten setzen'
 					.'</td>'
 					.'<td colspan="5">'
-						.'<div id="map" class="map" style="height:300px;"></div>'
+					.'<input id="map_address_input" type="text" name="address" size="105" maxlength="128" value="">'
+						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
 							.'osmp.showMap();'
 						.'</script>'

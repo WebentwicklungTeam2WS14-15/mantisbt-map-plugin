@@ -1,0 +1,24 @@
+#osmp_map{
+  height:300px;
+  padding:0px;
+}
+
+#map_address_input{
+
+}
+
+#map_address_display{
+  vertical-align:middle;
+  padding:0px;
+  width:100%;
+  margin: 0 3px 0 3px;
+  background-color:#eaeaea;
+}
+
+#map_address_display_text{
+  text-align:left;
+  padding:5px;
+  font-weight: bold;
+  font-style: normal;
+  color: #484848;
+}

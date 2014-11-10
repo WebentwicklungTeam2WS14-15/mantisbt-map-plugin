@@ -1,7 +1,7 @@
 var osmp = new Object;
 osmp.showMap = function() {
   var map = new ol.Map({
-    target: 'map',
+    target: 'osmp_map',
     layers: [
       new ol.layer.Tile({
         source: new ol.source.MapQuest({layer: 'osm'})
