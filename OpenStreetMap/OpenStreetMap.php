@@ -190,8 +190,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	function show_map_in_view( $p_bug_id ){
 		$t_address = 'Friedrich-Heinrich-Allee 26 47475 Kamp-Lintfort';
 		$t_coordiantes = '51.500597, 6.544889';
-		$t_lat = '51.500597';
-		$t_lng = '6.544889';
+		$t_lat = '51.65715';
+		$t_lng = '6.96174';
 
 		echo '<a name="mapview" id="mapview" /><br />'
 				.'<div id="mapview_open">'

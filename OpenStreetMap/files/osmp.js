@@ -23,16 +23,13 @@ osmp.loadMap = function(){
 
 osmp.setMapPosition = function(lat, lng){
   var proj_from = new ol.proj.Projection('EPSG:4326'); // transform from WGS 1984
-  var proj_to   = new ol.proj.Projection('EPSG:900913'); // to Spherical Mercator Projection
-  //var center = new ol.LonLat(lng, lat);
-  //center.transform(coor_from, coor_to);
-  //osmp.map.setCenter(center, 12);
+  var proj_to   = new ol.proj.Projection('EPSG:3857'); // to projected crs
 
-  var osmp_zoom = 5;
-  console.log("Setting map view to: " + lat + ", " + lng + " zoom: " + osmp_zoom);
+
+  var osmp_zoom = 17;
+  console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
   osmp.map.setView(new ol.View({
-    center: ol.proj.transform([lat, lng], proj_from, proj_to),
+    center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
     zoom: osmp_zoom
   }));
-
 }
