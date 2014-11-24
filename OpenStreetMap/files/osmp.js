@@ -32,8 +32,6 @@ osmp.loadMap = function (){
  * Centers the map on the given position.
  */
 osmp.setMapPosition = function (lng, lat){
-  var proj_from = new ol.proj.Projection('EPSG:4326'); // transform from WGS 1984
-  var proj_to   = new ol.proj.Projection('EPSG:3857'); // to projected crs
   var osmp_zoom = 17;
   console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
   osmp.map.setView(new ol.View({
@@ -74,12 +72,37 @@ osmp.getCoordinates = function (address){
  * Adds a marker to the map.
  */
 osmp.showMarker = function(lng, lat){
-  var markers = new ol.Layer.Markers("Markers");
-  osmp.map.addLayer(markers);
-  var size = new ol.Size(21,25);
-  var offset = new ol.Pixel(-(size.w/2), -size.h);
-  var icon = new ol.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
-  markers.addMarker(new ol.Marker(new ol.LonLat(lng, lat), icon));
+  console.log("Showing map marker Lat=" + lat + ", Lng=" + lng);
+  // Marker position
+  var iconFeature = new ol.Feature({
+    geometry: new ol.geom.Point(ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
+    name: 'Ihre position',
+  });
+  // Marker style
+  var iconStyle = new ol.style.Style({
+    image: new ol.style.Icon({
+      opacity: 0.75,
+      anchor: [0.5, 46],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      graphicWidth:50,
+      graphicHeight:50,
+      src: 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/64/Map-Marker-Marker-Outside-Chartreuse-icon.png'
+    })
+  });
+  //Set icon style
+  iconFeature.setStyle(iconStyle);
+
+  //
+  var vectorSource = new ol.source.Vector({
+    features: [iconFeature]
+  });
+
+  var vectorLayer = new ol.layer.Vector({
+    source: vectorSource,
+  });
+
+  osmp.map.addLayer(vectorLayer);
 }
 
 /*
