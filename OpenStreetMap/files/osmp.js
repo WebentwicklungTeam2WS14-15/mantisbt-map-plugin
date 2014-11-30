@@ -87,7 +87,8 @@ osmp.showMarker = function(lng, lat){
       anchorYUnits: 'pixels',
       graphicWidth:50,
       graphicHeight:50,
-      src: 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/64/Map-Marker-Marker-Outside-Chartreuse-icon.png'
+      // Copyright Map Icons Collection Creative Commons 3.0 BY-SA Author : Nicolas Mollet
+      src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAlCAYAAAAjt+tHAAACnUlEQVRYhbWXu24TQRSGv1ksa21CiihConJewEKIIrIo0th9niFW8hZUvAUInsH9VimQlSJCiBeAKo1FEYyzspYZCs8xx85eZs36SKO9er5/zvl3vcc45wAYjUYtIALaftui2cgACywBmyRJBmCccwJvA7EfbS8gaghuvYAlkPqxTJIkM8PhUOBd4NBvY/aTgRRYAPd+u5RVxh7+3Dk3bRi8EcaYgd+1QKZT33XOTc8fUl5Yy7F1jYJnkeEuiph04qkxpo8vgzZeDOwFDvg5rRyKzyJxu4wg+NnNtPS4XARopri8ltuvTweFUH2+QlhUG1wGk+Pr08Gj/UoVu4QGVQlrTEBvfLEByFvh9rUqMcECeuMLTq4uH4HywHXKECRA4DKZnjRv/+xmGlyGSgEaHvL4FWViJwFl8LzJ8+pfVYZCASEr16ssErazBwQuzhdY2YqrztcSEPJjDdsFDjX+8yUTRZPr7ITCawkoewdsR+hrGGq8iLTh8swn57UInbX/FhAaWsTJ1WVzr2IdvfFF6eokQ9/ffwDKS7bTh6f2Q1n8+PhpfX+RL8xwODwCjoEj59z07a/fu2gKjnfPnsqH6U9gJiWwJb/ZV1hYeSBTg1lk9kZUc6+ZEf/apRTgLor2IkI+y32knmlbCr4wxgwmnTjXsucPKf3sTxDsW+sJk06ce83Xf4HqC6w/uPc39NlszSKASSf+TIAIgRtj3vhT4q/t1iwFbEhzuv6Gd87dlmVCwV+z6a3i5rSiPZetbt++5IlQ8Fc6xVsC8tvzsvDCYuDAj65z7qsWoeAvPXzuRyqgoqgUUCDiQDIB6JXPqQEPFpAj4tCLuAWk5nNW5gqG1xKwJaLrR9tfWrJK/aIOvLYAJUJMKY+qPGLLOnCAv1nXlMCzka/IAAAAAElFTkSuQmCC'
     })
   });
   //Set icon style
