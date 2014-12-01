@@ -210,7 +210,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 								.'</div>'
 								.'<div id="osmp_map"></div>'
 								.'<script type="text/javascript">'
-									.'osmp.showMap('.$t_lng.','.$t_lat.');'
+									.'osmp.loadMap();'
+									.'osmp.setMapPosition('.$t_lng.','.$t_lat.',17);'
+									.'osmp.showMarker('.$t_lng.','.$t_lat.');'
 								.'</script>'
 							.'</td>'
 						.'</tr>'
@@ -224,6 +226,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	function show_map_update_form( $p_bug_id ){
 		$t_lat = '51.65727969659906';
 		$t_lng = '6.964556558664106';
+		$t_zoom = '17';
 
 		echo '<tr class="row-1">'
 					.'<td class="category">'
@@ -233,7 +236,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'<input id="map_address_input" type="text" name="address" size="105" maxlength="128" value="">'
 						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
-						.'osmp.showMap('.$t_lng.','.$t_lat.');'
+						.'osmp.loadMap();'
+						.'osmp.setMapPosition('.$t_lng.','.$t_lat.','.$t_zoom.');'
+						.'osmp.setClickPositionHandler();'
 						.'</script>'
 					.'</td>'
 				.'</tr>';
@@ -243,8 +248,11 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a map in the bug report form
 	*/
 	function show_map_report_form( $p_project_id ){
-		$t_lat = '51.65727969659906';
-		$t_lng = '6.964556558664106';
+		// Default position to center the map at the beginning
+		$t_lat = '51.65997382185341';
+		$t_lng = '6.970621633869327';
+		$t_zoom = '13';
+
 		echo '<tr class="row-1">'
 					.'<td class="category">'
 						.'Ortsdaten setzen'
@@ -253,7 +261,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'<input id="map_address_input" onkeydown="osmp.catchEnter(this);" type="text" name="address" size="105" maxlength="128" value="">'
 						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
-						.'osmp.showMap('.$t_lng.','.$t_lat.');'
+						.'osmp.loadMap();'
+						.'osmp.setMapPosition('.$t_lng.','.$t_lat.','.$t_zoom.');'
+						.'osmp.setClickPositionHandler();'
 						.'osmp.setGoogleAutocomplete();'
 						.'</script>'
 					.'</td>'

@@ -1,5 +1,6 @@
 var osmp = new Object();
 osmp.map = undefined;
+osmp.marker_layer = undefined;
 
 // Icon to display an issue on the map
 // Copyright Map Icons Collection Creative Commons 3.0 BY-SA Author : Nicolas Mollet
@@ -47,8 +48,17 @@ osmp.loadMap = function (){
 /*
  * Centers the map on the given position.
  */
-osmp.setMapPosition = function (lng, lat){
-  var osmp_zoom = 17;
+osmp.setMapPosition = function (lng, lat, zoom){
+  var osmp_zoom = zoom;
+  console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
+  osmp.map.setView(new ol.View({
+    center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
+    zoom: osmp_zoom
+  }));
+}
+
+osmp.setMapClickPosition = function (lng, lat){
+  var osmp_zoom = osmp.map.getView().getZoom();
   console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
   osmp.map.setView(new ol.View({
     center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
@@ -115,13 +125,14 @@ osmp.showMarker = function(lng, lat){
   var vectorSource = new ol.source.Vector({
     features: [iconFeature]
   });
-
-  // Create vector layer
-  var vectorLayer = new ol.layer.Vector({
+  if(osmp.marker_layer != undefined){
+    osmp.map.removeLayer(osmp.marker_layer);
+  }
+  osmp.marker_layer = new ol.layer.Vector({
     source: vectorSource,
   });
   // Add icon layer to map
-  osmp.map.addLayer(vectorLayer);
+  osmp.map.addLayer(osmp.marker_layer);
 }
 
 
@@ -130,7 +141,15 @@ osmp.showMarker = function(lng, lat){
      var coordinate = evt.coordinate;
      // Transfor position for further use
      var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
-     console.log("Registered click on map. Selected position: " + position);
+     console.log("Registered click on map. Selected position: " + position[0] + "," + position[1]);
+     osmp.setMapClickPosition(position[0],position[1]);
+     osmp.showMarker(position[0], position[1]);
+     var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position[1] + ',' + position[0]+ "&language=de";
+     link = link.replace(/\s+/g, '+');
+     osmp.jsonRequest(link, function (response){
+       var address = response.results[0].formatted_address;
+       document.getElementById('map_address_input').value = address;
+     });
    });
  }
 
@@ -140,7 +159,7 @@ osmp.showMarker = function(lng, lat){
    console.log("text has changed " + text);
  }
  osmp.setGoogleAutocomplete = function(){
-   console.lolg("Setting autocomplete");
+   console.log("Setting autocomplete");
    var autocomplete = new google.maps.places.Autocomplete(
      /** @type {HTMLInputElement} */(document.getElementById('map_address_input')),
      { types: ['geocode'] });
@@ -149,9 +168,8 @@ osmp.showMarker = function(lng, lat){
        var address = place.formatted_address;
        var lat = place.geometry.location.lat();
        var lng = place.geometry.location.lng();
+       osmp.setMapPosition(lng,lat,17);
        osmp.showMarker(lng, lat);
-       console.log("Selected address: " + address + " coords=" + lat + "," + lng);
-       document.getElementById('map_address_input').value = address;
      });
  }
 
