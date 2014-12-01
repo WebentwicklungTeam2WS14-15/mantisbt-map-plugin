@@ -1,6 +1,20 @@
 var osmp = new Object();
 osmp.map = undefined;
 
+// Icon to display an issue on the map
+// Copyright Map Icons Collection Creative Commons 3.0 BY-SA Author : Nicolas Mollet
+osmp.marker_icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAlCAYAAAAjt+tHAAACnUlEQVRYhbWXu24TQR'
++ 'SGv1ksa21CiihConJewEKIIrIo0th9niFW8hZUvAUInsH9VimQlSJCiBeAKo1FEYyzspYZCs8xx85eZs36SKO9er5/zvl3vcc45'
++ 'wAYjUYtIALaftui2cgACywBmyRJBmCccwJvA7EfbS8gaghuvYAlkPqxTJIkM8PhUOBd4NBvY/aTgRRYAPd+u5RVxh7+3Dk3b'
++ 'Ri8EcaYgd+1QKZT33XOTc8fUl5Yy7F1jYJnkeEuiph04qkxpo8vgzZeDOwFDvg5rRyKzyJxu4wg+NnNtPS4XARopri8ltuvTw'
++ 'eFUH2+QlhUG1wGk+Pr08Gj/UoVu4QGVQlrTEBvfLEByFvh9rUqMcECeuMLTq4uH4HywHXKECRA4DKZnjRv/+xmGlyGS'
++ 'gEaHvL4FWViJwFl8LzJ8+pfVYZCASEr16ssErazBwQuzhdY2YqrztcSEPJjDdsFDjX+8yUTRZPr7ITCawkoewdsR+hrGGq8iLT'
++ 'h8swn57UInbX/FhAaWsTJ1WVzr2IdvfFF6eokQ9/ffwDKS7bTh6f2Q1n8+PhpfX+RL8xwODwCjoEj59z07a/fu2gKjnfPnsqH'
++ '6U9gJiWwJb/ZV1hYeSBTg1lk9kZUc6+ZEf/apRTgLor2IkI+y32knmlbCr4wxgwmnTjXsucPKf3sTxDsW+sJk06ce83Xf4HqC'
++ '6w/uPc39NlszSKASSf+TIAIgRtj3vhT4q/t1iwFbEhzuv6Gd87dlmVCwV+z6a3i5rSiPZetbt++5IlQ8Fc6xVsC8tvzsvDCYuDAj'
++ '65z7qsWoeAvPXzuRyqgoqgUUCDiQDIB6JXPqQEPFpAj4tCLuAWk5nNW5gqG1xKwJaLrR9tfWrJK/aIOvLYAJUJMKY+qPGLL'
++ 'OnCAv1nXlMCzka/IAAAAAElFTkSuQmCC';
+
 /*
  * Loads the map and centers on the given position.
  */
@@ -8,6 +22,7 @@ osmp.showMap = function (lng, lat) {
   this.loadMap();
   this.setMapPosition(lng, lat);
   this.showMarker(lng, lat);
+  this.setClickPositionHandler();
 }
 
 /*
@@ -20,6 +35,7 @@ osmp.loadMap = function (){
   console.log("Map container: " + osmp_container);
   osmp.map = new ol.Map({
     target: osmp_container,
+    interactions: ol.interaction.defaults({mouseWheelZoom:false}),
     layers: [
       new ol.layer.Tile({
         source: new ol.source.MapQuest({layer: osmp_layer})
@@ -63,7 +79,9 @@ osmp.getCoordinates = function (address){
   link = link.replace(/\s+/g, '+'); // Replace (multiple) spaces with plus char
   console.log("Running geocoder: " + link);
   this.jsonRequest(link, function(response){
-    console.log("Retrieved coordinates" + response);
+    var lat = response.results[0].geometry.location.lat;
+    var lng = response.results[0].geometry.location.lng;
+    console.log("Retrieved coordinates " + lat + ", " + lng);
     //document.getElementById('map_coordinates_display_text').innerHTML = address;
   });
 }
@@ -81,30 +99,68 @@ osmp.showMarker = function(lng, lat){
   // Marker style
   var iconStyle = new ol.style.Style({
     image: new ol.style.Icon({
-      opacity: 0.75,
+      opacity: 0.90,
       anchor: [0.5, 46],
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       graphicWidth:50,
       graphicHeight:50,
-      // Copyright Map Icons Collection Creative Commons 3.0 BY-SA Author : Nicolas Mollet
-      src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAlCAYAAAAjt+tHAAACnUlEQVRYhbWXu24TQRSGv1ksa21CiihConJewEKIIrIo0th9niFW8hZUvAUInsH9VimQlSJCiBeAKo1FEYyzspYZCs8xx85eZs36SKO9er5/zvl3vcc45wAYjUYtIALaftui2cgACywBmyRJBmCccwJvA7EfbS8gaghuvYAlkPqxTJIkM8PhUOBd4NBvY/aTgRRYAPd+u5RVxh7+3Dk3bRi8EcaYgd+1QKZT33XOTc8fUl5Yy7F1jYJnkeEuiph04qkxpo8vgzZeDOwFDvg5rRyKzyJxu4wg+NnNtPS4XARopri8ltuvTweFUH2+QlhUG1wGk+Pr08Gj/UoVu4QGVQlrTEBvfLEByFvh9rUqMcECeuMLTq4uH4HywHXKECRA4DKZnjRv/+xmGlyGSgEaHvL4FWViJwFl8LzJ8+pfVYZCASEr16ssErazBwQuzhdY2YqrztcSEPJjDdsFDjX+8yUTRZPr7ITCawkoewdsR+hrGGq8iLTh8swn57UInbX/FhAaWsTJ1WVzr2IdvfFF6eokQ9/ffwDKS7bTh6f2Q1n8+PhpfX+RL8xwODwCjoEj59z07a/fu2gKjnfPnsqH6U9gJiWwJb/ZV1hYeSBTg1lk9kZUc6+ZEf/apRTgLor2IkI+y32knmlbCr4wxgwmnTjXsucPKf3sTxDsW+sJk06ce83Xf4HqC6w/uPc39NlszSKASSf+TIAIgRtj3vhT4q/t1iwFbEhzuv6Gd87dlmVCwV+z6a3i5rSiPZetbt++5IlQ8Fc6xVsC8tvzsvDCYuDAj65z7qsWoeAvPXzuRyqgoqgUUCDiQDIB6JXPqQEPFpAj4tCLuAWk5nNW5gqG1xKwJaLrR9tfWrJK/aIOvLYAJUJMKY+qPGLLOnCAv1nXlMCzka/IAAAAAElFTkSuQmCC'
+      src: osmp.marker_icon
     })
   });
-  //Set icon style
+  // Set icon style
   iconFeature.setStyle(iconStyle);
 
-  //
+  // Set icon(s) to vector source
   var vectorSource = new ol.source.Vector({
     features: [iconFeature]
   });
 
+  // Create vector layer
   var vectorLayer = new ol.layer.Vector({
     source: vectorSource,
   });
-
+  // Add icon layer to map
   osmp.map.addLayer(vectorLayer);
 }
+
+
+ osmp.setClickPositionHandler = function (){
+   osmp.map.on('click', function(evt) {
+     var coordinate = evt.coordinate;
+     // Transfor position for further use
+     var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
+     console.log("Registered click on map. Selected position: " + position);
+   });
+ }
+
+ osmp.updateMapFromInput = function(){
+   var text  = document.getElementById('map_address_input').value;
+   this.getCoordinates(text);
+   console.log("text has changed " + text);
+ }
+ osmp.setGoogleAutocomplete = function(){
+   console.lolg("Setting autocomplete");
+   var autocomplete = new google.maps.places.Autocomplete(
+     /** @type {HTMLInputElement} */(document.getElementById('map_address_input')),
+     { types: ['geocode'] });
+     google.maps.event.addListener(autocomplete, 'place_changed', function() {
+       var place = autocomplete.getPlace();
+       var address = place.formatted_address;
+       var lat = place.geometry.location.lat();
+       var lng = place.geometry.location.lng();
+       osmp.showMarker(lng, lat);
+       console.log("Selected address: " + address + " coords=" + lat + "," + lng);
+       document.getElementById('map_address_input').value = address;
+     });
+ }
+
+ osmp.catchEnter = function(event){
+   if (event.keyCode == 13){
+     console.log("Enter was pressed");
+     return false;
+   }
+ }
 
 /*
  * Requests a document from a given address.

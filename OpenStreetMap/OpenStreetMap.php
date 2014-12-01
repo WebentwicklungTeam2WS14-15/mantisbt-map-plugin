@@ -69,11 +69,16 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$osmpcss = plugin_file( 'osmp_style.css' );
 		$oljs = plugin_file( 'ol.js' );
 		$olcss = plugin_file( 'ol.css' );
+		$placesApiJs = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&language=de';
+		$placesApiCss = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
+
 
 		$t_html = '<script type="text/javascript" src="'.$oljs.'"></script>';
 		$t_html .= '<link type="text/css" rel="stylesheet" href="'.$olcss.'">';
 		$t_html .= '<link type="text/css" rel="stylesheet" href="'.$osmpcss.'">';
+		$t_html .= '<link type="text/css" rel="stylesheet" href="'.$placesApiCss.'">';
 		$t_html .= '<script type="text/javascript" src="'.$osmpjs.'"></script>';
+		$t_html .= '<script type="text/javascript" src="'.$placesApiJs.'"></script>';
 		return $t_html;
 	}
 
@@ -188,8 +193,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a collapseable map in the bug view
 	*/
 	function show_map_in_view( $p_bug_id ){
-		$t_lat = '51.657230';
-		$t_lng = '6.964487';
+		$t_lat = '51.65727969659906';
+		$t_lng = '6.964556558664106';
 
 		echo '<a name="mapview" id="mapview" /><br />'
 				.'<div id="mapview_open">'
@@ -217,6 +222,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a map in the bug update form
 	*/
 	function show_map_update_form( $p_bug_id ){
+		$t_lat = '51.65727969659906';
+		$t_lng = '6.964556558664106';
+
 		echo '<tr class="row-1">'
 					.'<td class="category">'
 						.'Ortsdaten setzen'
@@ -225,7 +233,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'<input id="map_address_input" type="text" name="address" size="105" maxlength="128" value="">'
 						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
-							.'osmp.showMap();'
+						.'osmp.showMap('.$t_lng.','.$t_lat.');'
 						.'</script>'
 					.'</td>'
 				.'</tr>';
@@ -235,15 +243,18 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* Display a map in the bug report form
 	*/
 	function show_map_report_form( $p_project_id ){
+		$t_lat = '51.65727969659906';
+		$t_lng = '6.964556558664106';
 		echo '<tr class="row-1">'
 					.'<td class="category">'
 						.'Ortsdaten setzen'
 					.'</td>'
 					.'<td colspan="5">'
-					.'<input id="map_address_input" type="text" name="address" size="105" maxlength="128" value="">'
+						.'<input id="map_address_input" onkeydown="osmp.catchEnter(this);" type="text" name="address" size="105" maxlength="128" value="">'
 						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
-							.'osmp.showMap();'
+						.'osmp.showMap('.$t_lng.','.$t_lat.');'
+						.'osmp.setGoogleAutocomplete();'
 						.'</script>'
 					.'</td>'
 				.'</tr>';
