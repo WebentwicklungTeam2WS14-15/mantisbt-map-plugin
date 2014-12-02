@@ -2,7 +2,7 @@ var osmp = Object.create(null);
 osmp.map = undefined;
 osmp.marker_layer = undefined;
 
-// Icon to display an issue on the map
+// Icon to display an issue on the map (Base64)
 // Copyright Map Icons Collection Creative Commons 3.0 BY-SA Author : Nicolas Mollet
 osmp.marker_icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAlCAYAAAAjt+tHAAACnUlEQVRYhbWXu24TQR'
     + 'SGv1ksa21CiihConJewEKIIrIo0th9niFW8hZUvAUInsH9VimQlSJCiBeAKo1FEYyzspYZCs8xx85eZs36SKO9er5/zvl3vcc45'
@@ -15,6 +15,7 @@ osmp.marker_icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAlCAYAAA
     + '6w/uPc39NlszSKASSf+TIAIgRtj3vhT4q/t1iwFbEhzuv6Gd87dlmVCwV+z6a3i5rSiPZetbt++5IlQ8Fc6xVsC8tvzsvDCYuDAj'
     + '65z7qsWoeAvPXzuRyqgoqgUUCDiQDIB6JXPqQEPFpAj4tCLuAWk5nNW5gqG1xKwJaLrR9tfWrJK/aIOvLYAJUJMKY+qPGLL'
     + 'OnCAv1nXlMCzka/IAAAAAElFTkSuQmCC';
+
 
 /*
  * Loads the basic map.
@@ -35,6 +36,7 @@ osmp.loadMap = function () {
     });
 };
 
+
 /*
  * Centers the map on the given position using the specified zoom.
  */
@@ -46,6 +48,7 @@ osmp.setMapPosition = function (lng, lat, zoom){
         zoom: osmp_zoom
     }));
 };
+
 
 /*
 * Centers the map on the given position.
@@ -59,12 +62,13 @@ osmp.setMapPositionKeepZoom = function (lng, lat){
     }));
 };
 
+
 /*
- * Resolves coordinates and writes address to the document.
+ * Resolves coordinates to an address.
  */
 osmp.resolveCoordinates = function (lng, lat, callback){
     console.log("Resolving coordinates: Lat=" + lat + " Lng=" + lng);
-    var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng+ "&language=de";
+    var link = getResolveCoordinateLink(lng, lat);
     console.log("Running geocoder: " + link);
     this.webRequest(link, function (response){
         var address = response.results[0].formatted_address;
@@ -74,6 +78,9 @@ osmp.resolveCoordinates = function (lng, lat, callback){
 };
 
 
+/*
+* Resolves coordinates and sets resulting addres to the display html element.
+*/
 osmp.setAddressText = function(lng, lat){
     console.log("Setting address text");
     osmp.resolveCoordinates(lng, lat, function(address){
@@ -82,19 +89,18 @@ osmp.setAddressText = function(lng, lat){
 };
 
 
-
 /*
  * Resolves an address and writes coordinates to the document.
  */
 osmp.resolveAddress = function (address, callback){
     console.log("Resolving address: " + address);
-    var link = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + "&language=de";
-    link = link.replace(/\s+/g, '+'); // Replace (multiple) spaces with plus char
+    var link = osmp.getResolveAddressLink(address);
     console.log("Running geocoder: " + link);
     this.webRequest(link, function(response){
         var lat = response.results[0].geometry.location.lat;
         var lng = response.results[0].geometry.location.lng;
         console.log("Retrieved coordinates " + lat + ", " + lng);
+        callback(lat, lng);
         //document.getElementById('map_coordinates_display_text').innerHTML = address;
     });
 };
@@ -148,13 +154,36 @@ osmp.addMarker = function(lng, lat){
 
 
 /*
- * Clears all marker.
+ * Clears all markers.
  */
 osmp.clearMarkers = function(){
     if(osmp.marker_layer !== undefined){
       osmp.map.removeLayer(osmp.marker_layer);
     }
 };
+
+
+/*
+ * Builds the link to resolve an address using Google geocoder
+ */
+osmp.getResolveAddressLink = function(address){
+    var link = 'http://maps.googleapis.com/maps/api/geocode/json?address='
+    + address
+    + "&language=de";
+    link = link.replace(/\s+/g, '+'); // Replace (multiple) spaces with plus char
+    return link;
+};
+
+
+/*
+* Builds the link to resolve coordinates using Google geocoder
+*/
+osmp.getResolveCoordinateLink = function(lng, lat){
+    var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='
+    + lat + ',' + lng
+    + "&language=de";
+    return link;
+}
 
 
 /*
@@ -182,27 +211,28 @@ osmp.setPositionClickHandler = function (){
 osmp.setGoogleAutocomplete = function(){
    console.log("Setting autocomplete");
    var autocomplete = new google.maps.places.Autocomplete(
-     (document.getElementById('map_address_input')),
-     { types: ['geocode'] });
-     google.maps.event.addListener(autocomplete, 'place_changed', function() {
-       var place = autocomplete.getPlace();
-       var address = place.formatted_address;
-       var lat = place.geometry.location.lat();
-       var lng = place.geometry.location.lng();
-       osmp.setMapPosition(lng,lat,17);
-       osmp.clearAndSetMarker(lng, lat);
-     });
+        (document.getElementById('map_address_input')),
+        { types: ['geocode'] });
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        var address = place.formatted_address;
+        var lat = place.geometry.location.lat();
+                var lng = place.geometry.location.lng();
+        osmp.setMapPosition(lng,lat,17);
+        osmp.clearAndSetMarker(lng, lat);
+    });
 };
 
 /*
-* Attempt to prevent hitting enter completing the bug report.
-*/
+ * Attempt to prevent hitting enter completing the bug report.
+ */
 osmp.catchEnter = function(event){
     if (event.keyCode == 13){
         console.log("Enter was pressed");
         return false;
     }
 };
+
 
 /*
  * Requests a document from a given url.
@@ -220,3 +250,6 @@ osmp.webRequest = function (url, callback) {
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 };
+
+};
+;

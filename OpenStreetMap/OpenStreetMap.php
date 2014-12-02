@@ -243,7 +243,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 					.'</td>'
 				.'</tr>';
 	}
-
+	
 	/**
 	* Display a map in the bug report form
 	*/

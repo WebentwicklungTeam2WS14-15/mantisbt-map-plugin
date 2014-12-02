@@ -1,0 +1,10 @@
+<?php
+
+  $s_plugin_OpenStreetMap = '';
+  $s_plugin_OpenStreetMap_title = 'OpenStreetMap plugin';
+  $s_plugin_OpenStreetMap_description = 'This plugin uses OpenLayers to display geo information in bug views';
+
+  // Bug extra
+  $s_plugin_OpenStreetMap_bug_extra_title = 'Set geolocation';
+
+/* ?> No closing php tag as of documentation */
