@@ -1,4 +1,4 @@
-var osmp = new Object();
+var osmp = Object.create(null);
 osmp.map = undefined;
 osmp.marker_layer = undefined;
 
@@ -19,7 +19,7 @@ osmp.marker_icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAlCAYAAA
 /*
  * Loads the basic map.
  */
-osmp.loadMap = function (){
+osmp.loadMap = function () {
     var osmp_container = 'osmp_map';
     var osmp_layer = 'osm';
 
@@ -33,7 +33,7 @@ osmp.loadMap = function (){
           })
       ]
     });
-}
+};
 
 /*
  * Centers the map on the given position using the specified zoom.
@@ -45,7 +45,7 @@ osmp.setMapPosition = function (lng, lat, zoom){
         center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
         zoom: osmp_zoom
     }));
-}
+};
 
 /*
 * Centers the map on the given position.
@@ -57,7 +57,7 @@ osmp.setMapPositionKeepZoom = function (lng, lat){
         center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
         zoom: osmp_zoom
     }));
-}
+};
 
 /*
  * Resolves coordinates and writes address to the document.
@@ -71,14 +71,15 @@ osmp.resolveCoordinates = function (lng, lat, callback){
         console.log("Retrieved address: " + address);
         callback(address);
     });
-}
+};
+
 
 osmp.setAddressText = function(lng, lat){
     console.log("Setting address text");
     osmp.resolveCoordinates(lng, lat, function(address){
         document.getElementById('map_address_display_text').innerHTML = address;
     });
-}
+};
 
 
 
@@ -96,7 +97,7 @@ osmp.resolveAddress = function (address, callback){
         console.log("Retrieved coordinates " + lat + ", " + lng);
         //document.getElementById('map_coordinates_display_text').innerHTML = address;
     });
-}
+};
 
 /*
  * Clears all markers and sets a new one to specified position.
@@ -104,7 +105,7 @@ osmp.resolveAddress = function (address, callback){
 osmp.clearAndSetMarker = function(lng, lat){
     osmp.clearMarkers();
     osmp.addMarker(lng,lat);
-}
+};
 
 /*
  * Adds a marker to the map.
@@ -143,17 +144,17 @@ osmp.addMarker = function(lng, lat){
     });
     // Add icon layer to map
     osmp.map.addLayer(osmp.marker_layer);
-}
+};
 
 
 /*
  * Clears all marker.
  */
 osmp.clearMarkers = function(){
-    if(osmp.marker_layer != undefined){
+    if(osmp.marker_layer !== undefined){
       osmp.map.removeLayer(osmp.marker_layer);
     }
-}
+};
 
 
 /*
@@ -165,7 +166,6 @@ osmp.setPositionClickHandler = function (){
         // Transfor position for further use
         var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
         console.log("Registered click on map. Selected position: Lat=" + position[0] + ", Lng=" + position[1]);
-        osmp.setMapPositionKeepZoom(position[0],position[1]);
         osmp.clearAndSetMarker(position[0], position[1]);
         var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position[1] + ',' + position[0] + "&language=de";
         link = link.replace(/\s+/g, '+');
@@ -174,8 +174,7 @@ osmp.setPositionClickHandler = function (){
             document.getElementById('map_address_input').value = address;
         });
     });
- }
-
+ };
 
  /*
  * Activates Google autocomplete for the 'map_address_input' text input.
@@ -183,7 +182,7 @@ osmp.setPositionClickHandler = function (){
 osmp.setGoogleAutocomplete = function(){
    console.log("Setting autocomplete");
    var autocomplete = new google.maps.places.Autocomplete(
-     /** @type {HTMLInputElement} */(document.getElementById('map_address_input')),
+     (document.getElementById('map_address_input')),
      { types: ['geocode'] });
      google.maps.event.addListener(autocomplete, 'place_changed', function() {
        var place = autocomplete.getPlace();
@@ -191,9 +190,9 @@ osmp.setGoogleAutocomplete = function(){
        var lat = place.geometry.location.lat();
        var lng = place.geometry.location.lng();
        osmp.setMapPosition(lng,lat,17);
-       osmp.showMarker(lng, lat);
+       osmp.clearAndSetMarker(lng, lat);
      });
-}
+};
 
 /*
 * Attempt to prevent hitting enter completing the bug report.
@@ -203,7 +202,7 @@ osmp.catchEnter = function(event){
         console.log("Enter was pressed");
         return false;
     }
-}
+};
 
 /*
  * Requests a document from a given url.
@@ -217,7 +216,7 @@ osmp.webRequest = function (url, callback) {
                 callback(result);
             }
         }
-    }
+    };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
-}
+};
