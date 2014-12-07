@@ -127,7 +127,7 @@ osmp.addMarker = function (lng, lat) {
     var iconStyle = new ol.style.Style({
         image: new ol.style.Icon({
             opacity: 0.90,
-            anchor: [0.5, 55],
+            anchor: [0.5, 56],
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
             src: osmp.marker_icon
