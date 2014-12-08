@@ -141,8 +141,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$address = $_POST['hiddenaddress'];
 		$lat = $_POST['newlatitude'];
 		$lng = $_POST['newlongitude'];
-		$this->updateAddress( $bug_id, $address );
-		$this->updateGeo( $bug_id, $lat, $lng );
+		$this->writeAddress( $bug_id, $address );
+		$this->writeGeo( $bug_id, $lat, $lng );
 	}
 
 	/**
@@ -348,18 +348,19 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	/**
 	* Insert new address into database
 	*/
-	function writeAddress ( $p_project_id, $p_address ){
+	function writeAddress ( $p_bug_id, $p_address ){
 		$table = 'mantis_custom_field_string_table';
-		$query_write_address =  'INSERT INTO mantis_bug_text_table (description) VALUES ('.$p_address.')';
+		$query_write_address =  'INSERT INTO '.$table.' (field_id, bug_id, value) VALUES (3, '.$p_bug_id.', "'.$p_address.'")';
 		$result_write_address = db_query( $query_write_address );
 	}
 
 	/**
 	* Insert new geodata into database
 	*/
-	function writeGeo ( $p_project_id, $lat, $lng ){
+	function writeGeo ( $p_bug_id, $lat, $lng ){
 		$table = 'mantis_custom_field_string_table';
-		$query_write_coords =  'INSERT INTO mantis_bug_text_table (description) VALUES ('.$lat.','.$lng.')';
+		$geo_text = 'Latitude: '.$lat.', Longitude: '.$lng;
+		$query_write_coords =  'INSERT INTO '.$table.' (field_id, bug_id, value) VALUES (2, '.$p_bug_id.', "'.$geo_text.'")';
 		$result_write_coords = db_query( $query_write_coords );
 	}
 
