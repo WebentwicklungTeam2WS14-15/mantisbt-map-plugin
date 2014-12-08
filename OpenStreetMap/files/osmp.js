@@ -13,18 +13,18 @@ osmp.marker_icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAA3CAYAAA
  * Loads the basic map.
  */
 osmp.loadMap = function () {
-    var osmp_container = 'osmp_map';
-    var osmp_layer = 'osm';
-    console.log("Map container: " + osmp_container);
-    osmp.map = new ol.Map({
-        target: osmp_container,
-        interactions: ol.interaction.defaults({mouseWheelZoom: false}),
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: osmp_layer})
-            })
-        ]
-    });
+	var osmp_container = 'osmp_map';
+	var osmp_layer = 'osm';
+	console.log("Map container: " + osmp_container);
+	osmp.map = new ol.Map({
+		target: osmp_container,
+		interactions: ol.interaction.defaults({mouseWheelZoom: false}),
+		layers: [
+			new ol.layer.Tile({
+				source: new ol.source.MapQuest({layer: osmp_layer})
+			})
+		]
+	});
 };
 
 
@@ -32,12 +32,12 @@ osmp.loadMap = function () {
  * Centers the map on the given position using the specified zoom.
  */
 osmp.setMapPosition = function (lng, lat, zoom) {
-    var osmp_zoom = zoom;
-    console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
-    osmp.map.setView(new ol.View({
-        center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
-        zoom: osmp_zoom
-    }));
+	var osmp_zoom = zoom;
+	console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
+	osmp.map.setView(new ol.View({
+		center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
+		zoom: osmp_zoom
+	}));
 };
 
 
@@ -45,12 +45,12 @@ osmp.setMapPosition = function (lng, lat, zoom) {
 * Centers the map on the given position.
 */
 osmp.setMapPositionKeepZoom = function (lng, lat) {
-    var osmp_zoom = osmp.map.getView().getZoom();
-    console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
-    osmp.map.setView(new ol.View({
-        center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
-        zoom: osmp_zoom
-    }));
+	var osmp_zoom = osmp.map.getView().getZoom();
+	console.log("Setting map view: Lat=" + lat + ", Lng=" + lng + " zoom: " + osmp_zoom);
+	osmp.map.setView(new ol.View({
+		center: ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'),
+		zoom: osmp_zoom
+	}));
 };
 
 
@@ -58,14 +58,14 @@ osmp.setMapPositionKeepZoom = function (lng, lat) {
  * Resolves coordinates to an address.
  */
 osmp.resolveCoordinates = function (lng, lat, callback) {
-    console.log("Resolving coordinates: Lat=" + lat + " Lng=" + lng);
-    var link = getResolveCoordinateLink(lng, lat);
-    console.log("Running geocoder: " + link);
-    this.webRequest(link, function (response) {
-        var address = response.results[0].formatted_address;
-        console.log("Retrieved address: " + address);
-        callback(address);
-    });
+	console.log("Resolving coordinates: Lat=" + lat + " Lng=" + lng);
+	var link = getResolveCoordinateLink(lng, lat);
+	console.log("Running geocoder: " + link);
+	this.webRequest(link, function (response) {
+		var address = response.results[0].formatted_address;
+		console.log("Retrieved address: " + address);
+		callback(address);
+	});
 };
 
 
@@ -73,10 +73,10 @@ osmp.resolveCoordinates = function (lng, lat, callback) {
 * Resolves coordinates and sets resulting addres to the display html element.
 */
 osmp.setAddressText = function (lng, lat) {
-    console.log("Setting address text");
-    osmp.resolveCoordinates(lng, lat, function (address) {
-        document.getElementById('map_address_display_text').innerHTML = address;
-    });
+	console.log("Setting address text");
+	osmp.resolveCoordinates(lng, lat, function (address) {
+		document.getElementById('map_address_display_text').innerHTML = address;
+	});
 };
 
 
@@ -84,63 +84,63 @@ osmp.setAddressText = function (lng, lat) {
  * Resolves an address and writes coordinates to the document.
  */
 osmp.resolveAddress = function (address, callback) {
-    console.log("Resolving address: " + address);
-    var link = osmp.getResolveAddressLink(address);
-    console.log("Running geocoder: " + link);
-    this.webRequest(link, function (response) {
-        var lat = response.results[0].geometry.location.lat;
-        var lng = response.results[0].geometry.location.lng;
-        console.log("Retrieved coordinates " + lat + ", " + lng);
-        callback(lat, lng);
-        //document.getElementById('map_coordinates_display_text').innerHTML = address;
-    });
+	console.log("Resolving address: " + address);
+	var link = osmp.getResolveAddressLink(address);
+	console.log("Running geocoder: " + link);
+	this.webRequest(link, function (response) {
+		var lat = response.results[0].geometry.location.lat;
+		var lng = response.results[0].geometry.location.lng;
+		console.log("Retrieved coordinates " + lat + ", " + lng);
+		callback(lat, lng);
+		//document.getElementById('map_coordinates_display_text').innerHTML = address;
+	});
 };
 
 /*
  * Clears all markers and sets a new one to specified position.
  */
 osmp.clearAndSetMarker = function (lng, lat) {
-  if (osmp.marker_layer == undefined) {
-    osmp.setMapPosition(lng,lat,17);
+  if (osmp.marker_layer === undefined) {
+	osmp.setMapPosition(lng,lat,17);
   }
-    osmp.clearMarkers();
-    osmp.addMarker(lng, lat);
+	osmp.clearMarkers();
+	osmp.addMarker(lng, lat);
 };
 
 /*
  * Adds a marker to the map.
  */
 osmp.addMarker = function (lng, lat) {
-    console.log("Showing map marker Lat=" + lat + ", Lng=" + lng);
-    // Marker position
-    var iconFeature = new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
-        name: 'Ihre position'
-    });
-    // Marker style
-    var iconStyle = new ol.style.Style({
-        image: new ol.style.Icon({
-            opacity: 0.90,
-            anchor: [0.5, 56],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            src: osmp.marker_icon
-        })
-    });
+	console.log("Showing map marker Lat=" + lat + ", Lng=" + lng);
+	// Marker position
+	var iconFeature = new ol.Feature({
+		geometry: new ol.geom.Point(ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
+		name: 'Ihre position'
+	});
+	// Marker style
+	var iconStyle = new ol.style.Style({
+		image: new ol.style.Icon({
+			opacity: 0.90,
+			anchor: [0.5, 56],
+			anchorXUnits: 'fraction',
+			anchorYUnits: 'pixels',
+			src: osmp.marker_icon
+		})
+	});
 
-    // Set icon style
-    iconFeature.setStyle(iconStyle);
+	// Set icon style
+	iconFeature.setStyle(iconStyle);
 
-    // Set icon(s) to vector source
-    var vectorSource = new ol.source.Vector({
-        features: [iconFeature]
-    });
+	// Set icon(s) to vector source
+	var vectorSource = new ol.source.Vector({
+		features: [iconFeature]
+	});
 
-    osmp.marker_layer = new ol.layer.Vector({
-        source: vectorSource,
-    });
-    // Add icon layer to map
-    osmp.map.addLayer(osmp.marker_layer);
+	osmp.marker_layer = new ol.layer.Vector({
+		source: vectorSource,
+	});
+	// Add icon layer to map
+	osmp.map.addLayer(osmp.marker_layer);
 };
 
 
@@ -148,26 +148,23 @@ osmp.addMarker = function (lng, lat) {
  * Clears all markers.
  */
 osmp.clearMarkers = function() {
-    if (osmp.marker_layer !== undefined) {
-      osmp.map.removeLayer(osmp.marker_layer);
-    }
+	if (osmp.marker_layer !== undefined) {
+	  osmp.map.removeLayer(osmp.marker_layer);
+	}
 };
 
 osmp.checkBounds = function(lng, lat) {
 
-
-}
+};
 
 
 /*
  * Builds the link to resolve an address using Google geocoder
  */
 osmp.getResolveAddressLink = function (address) {
-    var link = 'http://maps.googleapis.com/maps/api/geocode/json?address='
-    + address
-    + "&language=de";
-    link = link.replace(/\s+/g, '+'); // Replace (multiple) spaces with plus char
-    return link;
+	var link = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + "&language=de";
+	link = link.replace(/\s+/g, '+'); // Replace (multiple) spaces with plus char
+	return link;
 };
 
 
@@ -175,10 +172,8 @@ osmp.getResolveAddressLink = function (address) {
  * Builds the link to resolve coordinates using Google geocoder
  */
 osmp.getResolveCoordinateLink = function (lng, lat) {
-    var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='
-    + lat + ',' + lng
-    + "&language=de";
-    return link;
+	var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + "&language=de";
+	return link;
 };
 
 
@@ -186,23 +181,23 @@ osmp.getResolveCoordinateLink = function (lng, lat) {
  * Centers map on clicked position and adds a single marker
  */
 osmp.setPositionClickHandler = function (){
-    osmp.map.on('click', function(evt) {
-        var coordinate = evt.coordinate;
-        // Transfor position for further use
-        var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
-        console.log("Clicked position on map. Lat=" + position[1] + ", Lng=" + position[0]);
-        document.getElementById('hidden_input_latitude').value = position[1];
-        document.getElementById('hidden_input_longitude').value = position[0];
-        osmp.clearAndSetMarker(position[0], position[1]);
-        var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position[1] + ',' + position[0] + "&language=de";
-        link = link.replace(/\s+/g, '+');
-        osmp.webRequest(link, function (response){
-            var address = response.results[0].formatted_address;
-            console.log("Setting address: " + address);
-            document.getElementById('map_address_input').value = address;
-            document.getElementById('hidden_input_address').value = address;
-        });
-    });
+	osmp.map.on('click', function(evt) {
+		var coordinate = evt.coordinate;
+		// Transfor position for further use
+		var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
+		console.log("Clicked position on map. Lat=" + position[1] + ", Lng=" + position[0]);
+		document.getElementById('hidden_input_latitude').value = position[1];
+		document.getElementById('hidden_input_longitude').value = position[0];
+		osmp.clearAndSetMarker(position[0], position[1]);
+		var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position[1] + ',' + position[0] + "&language=de";
+		link = link.replace(/\s+/g, '+');
+		osmp.webRequest(link, function (response){
+			var address = response.results[0].formatted_address;
+			console.log("Setting address: " + address);
+			document.getElementById('map_address_input').value = address;
+			document.getElementById('hidden_input_address').value = address;
+		});
+	});
  };
 
 /*
@@ -211,29 +206,29 @@ osmp.setPositionClickHandler = function (){
 osmp.setGoogleAutocomplete = function(){
    console.log("Setting autocomplete");
    var autocomplete = new google.maps.places.Autocomplete(
-        (document.getElementById('map_address_input')),
-        { types: ['geocode'] });
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        var place = autocomplete.getPlace();
-        var address = place.formatted_address;
-        var lat = place.geometry.location.lat();
-        var lng = place.geometry.location.lng();
-        document.getElementById('hidden_input_latitude').value = lat;
-        document.getElementById('hidden_input_longitude').value = lng;
-        document.getElementById('hidden_input_address').value = address;
-        osmp.setMapPosition(lng,lat,17);
-        osmp.clearAndSetMarker(lng, lat);
-    });
+		(document.getElementById('map_address_input')),
+		{ types: ['geocode'] });
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		var place = autocomplete.getPlace();
+		var address = place.formatted_address;
+		var lat = place.geometry.location.lat();
+		var lng = place.geometry.location.lng();
+		document.getElementById('hidden_input_latitude').value = lat;
+		document.getElementById('hidden_input_longitude').value = lng;
+		document.getElementById('hidden_input_address').value = address;
+		osmp.setMapPosition(lng,lat,17);
+		osmp.clearAndSetMarker(lng, lat);
+	});
 };
 
 /*
  * Attempt to prevent hitting enter completing the bug report.
  */
 osmp.catchEnter = function (event) {
-    if (event.keyCode == 13){
-        console.log("Enter was pressed");
-        return false;
-    }
+	if (event.keyCode == 13){
+		console.log("Enter was pressed");
+		return false;
+	}
 };
 
 
@@ -241,15 +236,15 @@ osmp.catchEnter = function (event) {
  * Requests a document from a given url.
  */
 osmp.webRequest = function (url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var result = JSON.parse(xmlhttp.responseText);
-            if(callback){
-                callback(result);
-            }
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			var result = JSON.parse(xmlhttp.responseText);
+			if(callback){
+				callback(result);
+			}
+		}
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
 };
