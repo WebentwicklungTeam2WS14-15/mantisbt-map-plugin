@@ -133,16 +133,16 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	* known, and is passed as a second parameter.
 	*
 	* Parameters: <Complex> Bug data structure (see core/bug_api.php)
-	*							<Integer> Bug ID
+	*
 	*
 	*/
-	function event_report_bug( $p_event, $p_bug_id, $p_bug_data_structure){
+	function event_report_bug( $p_event, $p_bug_data_structure){
+		$bug_id = $p_bug_data_structure ->id;
 		$address = $_POST['hiddenaddress'];
 		$lat = $_POST['newlatitude'];
 		$lng = $_POST['newlongitude'];
-		//echo '<script>console.log("'.$p_bug_id.'_'.$address.'_'.$lng.'")</script>';
-		$this->updateAddress( $p_bug_id, $address );
-		$this->updateGeo( $p_bug_id, $lat, $lng );
+		$this->updateAddress( $bug_id, $address );
+		$this->updateGeo( $bug_id, $lat, $lng );
 	}
 
 	/**
