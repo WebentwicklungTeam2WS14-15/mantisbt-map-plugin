@@ -122,7 +122,6 @@ osmp.addMarker = function (lng, lat) {
         geometry: new ol.geom.Point(ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
         name: 'Ihre position'
     });
-
     // Marker style
     var iconStyle = new ol.style.Style({
         image: new ol.style.Icon({
@@ -191,13 +190,17 @@ osmp.setPositionClickHandler = function (){
         var coordinate = evt.coordinate;
         // Transfor position for further use
         var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
-        console.log("Registered click on map. Selected position: Lat=" + position[0] + ", Lng=" + position[1]);
+        console.log("Clicked position on map. Lat=" + position[1] + ", Lng=" + position[0]);
+        document.getElementById('hidden_input_latitude').value = position[1];
+        document.getElementById('hidden_input_longitude').value = position[0];
         osmp.clearAndSetMarker(position[0], position[1]);
         var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position[1] + ',' + position[0] + "&language=de";
         link = link.replace(/\s+/g, '+');
         osmp.webRequest(link, function (response){
             var address = response.results[0].formatted_address;
+            console.log("Setting address: " + address);
             document.getElementById('map_address_input').value = address;
+            document.getElementById('hidden_input_address').value = address;
         });
     });
  };
@@ -214,7 +217,10 @@ osmp.setGoogleAutocomplete = function(){
         var place = autocomplete.getPlace();
         var address = place.formatted_address;
         var lat = place.geometry.location.lat();
-                var lng = place.geometry.location.lng();
+        var lng = place.geometry.location.lng();
+        document.getElementById('hidden_input_latitude').value = lat;
+        document.getElementById('hidden_input_longitude').value = lng;
+        document.getElementById('hidden_input_address').value = address;
         osmp.setMapPosition(lng,lat,17);
         osmp.clearAndSetMarker(lng, lat);
     });
