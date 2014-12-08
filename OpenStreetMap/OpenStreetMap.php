@@ -243,6 +243,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'<input id="map_address_input" type="text" name="address" size="105" maxlength="128" value="'.$address.'">'
 						.'<input type="hidden" id="hidden_input_latitude" name="newlatitude" value=""/>'
 						.'<input type="hidden" id="hidden_input_longitude" name="newlongitude" value=""/>'
+						.'<input type="hidden" id="hidden_input_address" name="hiddenaddress" value="">'
 						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
 						.'osmp.loadMap();'
@@ -294,7 +295,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*/
 	function readAddress( $p_bug_id ){
 		$table = 'mantis_custom_field_string_table';
-		$query_read_address =  'SELECT value FROM '.$table.' WHERE bug_id = '.$p_bug_id.' AND field_id = 6';
+		$query_read_address =  'SELECT value FROM '.$table.' WHERE bug_id = '.$p_bug_id.' AND field_id = 3';
 		$result_read_address = db_query( $query_read_address );
 		$row_read_address = db_fetch_array( $result_read_address );
 		$address = $row_read_address['value'];
@@ -311,7 +312,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$query_read_coords =  'SELECT value FROM '.$table.' WHERE bug_id = '.$p_bug_id.' AND field_id = 2';
 		$result_read_coords = db_query( $query_read_coords );
 		$row_read_coords = db_fetch_array( $result_read_coords );
-		$geo_text = implode( "", $row_read_coords );
+		$geo_text = $row_read_coords['value'];
 		$geo_text_array = explode(" ", $geo_text );
 		$lat = str_replace(",","",$geo_text_array[1]);
 		$lng = str_replace(",","",$geo_text_array[3]);
@@ -326,7 +327,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*/
 	function updateAddress( $p_bug_id, $p_address ){
 		$table = 'mantis_custom_field_string_table';
-		$query_update_address =  'UPDATE '.$table.' SET value="'.$p_address.'" WHERE bug_id = '.$p_bug_id.' AND field_id = 6';
+		$query_update_address =  'UPDATE '.$table.' SET value="'.$p_address.'" WHERE bug_id = '.$p_bug_id.' AND field_id = 3';
 		$result_update_address = db_query( $query_update_address );
 	}
 
