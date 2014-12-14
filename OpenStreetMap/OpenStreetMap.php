@@ -20,7 +20,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$this->description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
 		$this->page = '';
 
-		$this->version = '0.9.5';
+		$this->version = '0.9.7';
 		$this->requires = array(
 			'MantisCore' => '1.2.0',
 		);
@@ -314,8 +314,8 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$row_read_coords = db_fetch_array( $result_read_coords );
 		$geo_text = $row_read_coords['value'];
 		$geo_text_array = explode(" ", $geo_text );
-		$lat = str_replace(",","",$geo_text_array[1]);
-		$lng = str_replace(",","",$geo_text_array[3]);
+		$lat = str_replace(",","",$geo_text_array[0]);
+		$lng = str_replace(",","",$geo_text_array[1]);
 		return array(
 			'lat' => $lat,
 			'lng' => $lng
@@ -336,7 +336,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*/
 	function updateGeo( $p_bug_id, $lat, $lng ){
 		$table = 'mantis_custom_field_string_table';
-		$geo_text = 'Latitude: '.$lat.', Longitude: '.$lng;
+		$geo_text = $lat.', '.$lng;
 		$query_update_coords =  'UPDATE '.$table.' SET value="'.$geo_text.'" WHERE bug_id = '.$p_bug_id.' AND field_id = 2';
 		$result_update_coords = db_query( $query_update_coords );
 	}
@@ -362,7 +362,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	*/
 	function writeGeo ( $p_bug_id, $lat, $lng ){
 		$table = 'mantis_custom_field_string_table';
-		$geo_text = 'Latitude: '.$lat.', Longitude: '.$lng;
+		$geo_text = $lat.', '.$lng;
 		$query_write_coords =  'INSERT INTO '.$table
 		.' (field_id, bug_id, value)'
 		.' VALUES (2, '.$p_bug_id.', "'.$geo_text.'")'
