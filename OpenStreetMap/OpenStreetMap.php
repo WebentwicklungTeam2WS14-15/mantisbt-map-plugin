@@ -249,7 +249,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'osmp.loadMap();'
 						.'osmp.clearAndSetMarker('.$coords['lng'].','.$coords['lat'].');'
 						.'osmp.setPositionClickHandler();'
-						.'osmp.setGoogleAutocomplete();'
+						.'osmp.setAutocompleteInputElements();'
 						.'</script>'
 					.'</td>'
 				.'</tr>';
@@ -278,7 +278,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 						.'osmp.loadMap();'
 						.'osmp.setMapPosition('.$lng.','.$lat.','.$zoom.');'
 						.'osmp.setPositionClickHandler();'
-						.'osmp.setGoogleAutocomplete();'
+						.'osmp.setAutocompleteInputElements();'
 						.'</script>'
 					.'</td>'
 				.'</tr>';
