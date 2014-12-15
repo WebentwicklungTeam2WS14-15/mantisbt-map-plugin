@@ -19,6 +19,10 @@ osmp.loadMap = function () {
 	osmp.map = new ol.Map({
 		target: osmp_container,
 		interactions: ol.interaction.defaults({mouseWheelZoom: false}),
+		controls: ol.control.defaults({
+		}).extend([
+			new ol.control.ScaleLine()
+			]),
 		layers: [
 			new ol.layer.Tile({
 				source: new ol.source.MapQuest({layer: osmp_layer})
@@ -153,8 +157,36 @@ osmp.clearMarkers = function() {
 	}
 };
 
-osmp.checkBounds = function(lng, lat) {
+/*
+* Checks if selected address is in Dorsten (GER) and notifies the user if not.
+*/
+osmp.checkBounds = function (lng, lat) {
+	var link = osmp.getResolveCoordinateLink(lng, lat);
+	this.webRequest(link, function (response) {
+		var address = response.results[0].formatted_address;
+		for(var i = 0; i<4; i++){
+			var town = response.results[0].address_components[i].short_name;
+			if(town == 'Dorsten'){
+				//console.log("Selected position is in Dorsten(GER)");
+				osmp.hideNotInBoundsInfo();
+				return;
+			}
+		}
+		//console.log("Selected position is not in Dorsten(GER)");
+		osmp.showNotInBoundsInfo();
+	});
+};
 
+osmp.showNotInBoundsInfo = function() {
+	var div = document.getElementById('location_bounds_alert');
+	div.style.opacity = '1';
+	div.innerHTML = 'Die ausgewählte Position befindet sich nicht in Dorsten!';
+};
+
+osmp.hideNotInBoundsInfo = function() {
+	var div = document.getElementById('location_bounds_alert');
+	div.style.opacity = '0';
+	div.innerHTML = '';
 };
 
 
@@ -186,8 +218,11 @@ osmp.setPositionClickHandler = function (){
 		// Transfor position for further use
 		var position = ol.proj.transform(coordinate, 'EPSG:3857','EPSG:4326');
 		//console.log("Clicked position on map. Lat=" + position[1] + ", Lng=" + position[0]);
-		document.getElementById('hidden_input_latitude').value = position[1];
-		document.getElementById('hidden_input_longitude').value = position[0];
+		var lat = position[1];
+		var lng = position[0];
+		document.getElementById('hidden_input_latitude').value = lat;
+		document.getElementById('hidden_input_longitude').value = lng;
+		osmp.checkBounds(lng, lat);
 		osmp.clearAndSetMarker(position[0], position[1]);
 		var link = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position[1] + ',' + position[0] + "&language=de";
 		link = link.replace(/\s+/g, '+');
@@ -214,6 +249,7 @@ osmp.setGoogleAutocomplete = function(element){
 		var address = place.formatted_address;
 		var lat = place.geometry.location.lat();
 		var lng = place.geometry.location.lng();
+		osmp.checkBounds(lng, lat);
 		document.getElementById('hidden_input_latitude').value = lat;
 		document.getElementById('hidden_input_longitude').value = lng;
 		document.getElementById('hidden_input_address').value = address;

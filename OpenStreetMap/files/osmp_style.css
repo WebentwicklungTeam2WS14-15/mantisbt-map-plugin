@@ -4,7 +4,6 @@
 }
 
 #map_address_input{
-
 }
 
 #map_address_display{
@@ -21,4 +20,29 @@
   font-weight: bold;
   font-style: normal;
   color: #484848;
+}
+
+#location_bounds_alert{
+    opacity: 0;
+    height: 20px;
+    background-color:#FFCDD2;
+}
+
+#address_input_container{
+    width:100%;
+    display:table;
+    padding:0px;
+    margin:0px;
+}
+
+#address_input_right_div{
+    display:table-cell;
+    width:70%;
+    vertical-align:top;
+}
+
+#address_input_left_div{
+    vertical-align:top;
+    width:30%;
+    display:table-cell;
 }
