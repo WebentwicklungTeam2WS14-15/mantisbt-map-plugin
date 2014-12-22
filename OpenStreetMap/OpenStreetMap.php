@@ -216,6 +216,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 									.$address
 									.'</div>'
 								.'</div>'
+								.'<input type="hidden" id="hidden_input_latitude" name="newlatitude" value="'.$coords['lat'].'"/>'
+								.'<input type="hidden" id="hidden_input_longitude" name="newlongitude" value="'.$coords['lng'].'"/>'
+								.'<input type="hidden" id="hidden_input_address" name="hiddenaddress" value="'.$address.'">'
 								.'<div id="osmp_map"></div>'
 								.'<script type="text/javascript">'
 									.'osmp.loadMap();'
@@ -251,7 +254,6 @@ class OpenStreetMapPlugin extends MantisPlugin {
 							.'<div id="location_bounds_alert"></div>'
 						.'</div>'
 					.'</div>'
-
 						.'<div id="osmp_map"></div>'
 						.'<script type="text/javascript">'
 						.'osmp.loadMap();'
