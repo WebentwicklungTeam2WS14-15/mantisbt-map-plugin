@@ -17,10 +17,10 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		//$this->name = plugin_lang_get( 'title' );
 
 		$this->name = 'OpenStreetMap Plugin';
-		$this->description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von Leaflet und OpenStreetMap.';
+		$this->description = 'Dieses Plugin erlaubt das Einfügen von Geodaten in Einträgen mit Hilfe von OpenLayers.';
 		$this->page = '';
 
-		$this->version = '0.9.7';
+		$this->version = '0.9.8';
 		$this->requires = array(
 			'MantisCore' => '1.2.0',
 		);
@@ -158,8 +158,15 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$address = $_POST['address'];
 		$lat = $_POST['newlatitude'];
 		$lng = $_POST['newlongitude'];
-		$this->updateAddress( $p_bug_id, $address );
-		$this->updateGeo( $p_bug_id, $lat, $lng );
+
+		if( isset ($_POST['address']) ) {
+			$this->updateAddress( $p_bug_id, $address );
+		}
+
+		if(isset ($_POST['newlatitude']) && isset ($_POST['newlongitude']) ){
+			$this->updateGeo( $p_bug_id, $lat, $lng );
+		}
+
 		return $p_bug_data_structure;
 	}
 
@@ -216,9 +223,6 @@ class OpenStreetMapPlugin extends MantisPlugin {
 									.$address
 									.'</div>'
 								.'</div>'
-								.'<input type="hidden" id="hidden_input_latitude" name="newlatitude" value="'.$coords['lat'].'"/>'
-								.'<input type="hidden" id="hidden_input_longitude" name="newlongitude" value="'.$coords['lng'].'"/>'
-								.'<input type="hidden" id="hidden_input_address" name="hiddenaddress" value="'.$address.'">'
 								.'<div id="osmp_map"></div>'
 								.'<script type="text/javascript">'
 									.'osmp.loadMap();'
