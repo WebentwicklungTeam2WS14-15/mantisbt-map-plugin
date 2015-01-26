@@ -1,5 +1,5 @@
 <?php
-
+/* File created by Peter Mösenthin */
   $s_plugin_OpenStreetMap = '';
   $s_plugin_OpenStreetMap_title = 'OpenStreetMap plugin';
   $s_plugin_OpenStreetMap_description = 'This plugin uses OpenLayers to display geo information in bug views';

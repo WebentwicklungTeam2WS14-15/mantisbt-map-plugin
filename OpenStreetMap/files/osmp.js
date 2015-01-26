@@ -1,3 +1,5 @@
+/* File created by Peter Mösenthin */
+
 var osmp = Object.create(null);
 osmp.map = undefined;
 osmp.marker_layer = undefined;
@@ -261,6 +263,7 @@ osmp.setGoogleAutocomplete = function(element){
 
 osmp.setAutocompleteInputElements = function(){
 	osmp.setGoogleAutocomplete(document.getElementById('map_address_input'));
+	//optional enable autocomplete on the default custom field input
 	//osmp.setGoogleAutocomplete(document.getElementsByName('custom_field_3')[0]);
 };
 
@@ -269,6 +272,7 @@ osmp.setAutocompleteInputElements = function(){
  */
 osmp.catchEnter = function (event) {
 	if (event.keyCode == 13){
+		//event.stop();
 		console.log("Enter was pressed");
 		return false;
 	}

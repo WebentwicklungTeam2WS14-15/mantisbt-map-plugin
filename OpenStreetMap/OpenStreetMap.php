@@ -1,5 +1,5 @@
 <?php
-
+/* File created by Peter Mösenthin */
 /*
  * As of documentation this is not necessary
  * require_once( config_get( 'class_path' ) . 'MantisPlugin.class.php' );
@@ -41,8 +41,6 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		$t_hooks = array(
 			'EVENT_VIEW_BUG_EXTRA'  => 'event_view_bug_extra',
 			'EVENT_LAYOUT_RESOURCES' => 'event_layout_resources',
-			'EVENT_FILTER_FIELDS' => 'event_filter_fields',
-			'EVENT_FILTER_COLUMNS' => 'event_filter_columns',
 			'EVENT_REPORT_BUG_FORM' => 'event_report_bug_form',
 			'EVENT_REPORT_BUG' => 'event_report_bug',
 			'EVENT_UPDATE_BUG_FORM' => 'event_update_bug_form',
@@ -53,7 +51,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 
 
 	//************************************************************************************************
-	//																		RESOURCES
+	//	RESOURCES
 	//************************************************************************************************
 
 	/**
@@ -83,7 +81,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	}
 
 	//************************************************************************************************
-	//																		BUG VIEWS
+	//	BUG VIEWS
 	//************************************************************************************************
 
 	/**
@@ -124,7 +122,7 @@ class OpenStreetMapPlugin extends MantisPlugin {
 	}
 
 	//************************************************************************************************
-	//																		BUG DATA
+	//	BUG DATA
 	//************************************************************************************************
 
 	/**
@@ -170,40 +168,9 @@ class OpenStreetMapPlugin extends MantisPlugin {
 		return $p_bug_data_structure;
 	}
 
-	//************************************************************************************************
-	//																		OTHER
-	//************************************************************************************************
-
-
-
-	/**
-	* This event allows a plugin to register custom filter objects (based on the MantisFilter
-	* class) that will allow the user to search for issues based on custom criteria or datasets. The
-	* plugin must ensure that the filter class has been defined before returning the class name for
-	* this event.
-	*
-	* Return: <Array> Array of class names for custom filters
-	*
-	*/
-	function event_filter_fields(){
-		//TODO check if is useful
-	}
-
-	/**
-	* This event allows a plugin to register custom column objects (based on the MantisColumn
-	* class) that will allow the user to view data for issues based on custom datasets. The plugin
-	* must ensure that the column class has been defined before returning the class name for this
-	* event.
-	*
-	* Return: <Array> Array of class names for custom columns
-	*
-	*/
-	function event_filter_columns(){
-		//TODO check if is useful
-	}
 
 	//************************************************************************************************
-	//																		MAP
+	//	MAP
 	//************************************************************************************************
 
 	/**
